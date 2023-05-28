@@ -19,5 +19,5 @@
         <h1 class="text-3xl text-emerald-400">{selectedTodo.title}</h1>
         <hr />
         <h1 class="text-2xl text-emerald-400">{selectedTodo.body}</h1>
-    {/if}    
+    {/if}
 </div>

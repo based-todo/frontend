@@ -24,7 +24,7 @@
   onMount(async () => {
     //TODO (API): Fetch collections from API
     const response = await fetch(
-      "https://jsonplaceholder.typicode.com/albums/?_limit=13"
+      "https://jsonplaceholder.typicode.com/albums/?_limit=55"
     );
     collections = await response.json();
   });

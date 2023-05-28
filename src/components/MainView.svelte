@@ -2,20 +2,25 @@
     import CollectionsView from "./CollectionsView.svelte";
     import TodosVew from "./TodosVew.svelte";
     import DetailsView from "./DetailsView.svelte";
+
     // @ts-ignore
-    import Collection from "./CollectionsView.svelte";
+    import { Collection } from "../model/Collection.js";
+    // @ts-ignore
+    import { Todo } from "../model/Todo.js";
     
     /**
      * @type {Collection?}
      */
-    let currentCollection = null;
+    let selectedCollection = null;
+    
     /**
-     * @type {Object?}
+     * @type {Todo?}
     */
+    // @ts-ignore
     let selectedTodo = null;
 </script>
 
-<CollectionsView bind:selectedCollection={currentCollection} />
-<TodosVew bind:collection={currentCollection} bind:selectedTodo={selectedTodo} />
-<DetailsView bind:selectedTodo={selectedTodo}/>
-```
+
+<CollectionsView bind:selectedCollection />
+<TodosVew bind:selectedCollection bind:selectedTodo />
+<DetailsView bind:selectedTodo />

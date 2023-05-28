@@ -1,16 +1,7 @@
 <script>
     import { onMount } from "svelte";
-
-    export class Collection {
-        /**
-       * @param {string} id
-       * @param {string} title
-       */
-        constructor(id, title) {
-            this.id = id;
-            this.title = title;
-        }
-    }
+    // @ts-ignore
+    import { Collection } from "../model/Collection.js";
 
     /**
    * @type {Collection[]}
@@ -19,7 +10,7 @@
     /**
      * @type {Collection?}
     */
-    export let selectedCollection = collections[0];
+    export let selectedCollection;
 
     onMount(async () => {
         //TODO (API): Fetch collections from API

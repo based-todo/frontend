@@ -1,12 +1,11 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import TopBar from '../components/top_bar.astro';
+import TodoView from '../components/todo_view.astro';
 ---
 
 <Layout title="based-todo">
-	<TopBar />
-	<main>
-		
+	<main class="flex flex-row h-full">
+		<TodoView />
 	</main>
 </Layout>
 

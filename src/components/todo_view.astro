@@ -1,0 +1,28 @@
+---
+const baseUrl = 'https://trei-crai-be.azurewebsites.net';
+const collections_response = await fetch(baseUrl + "/api/v1/todos", {
+    method: "GET",
+    headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpZCI6IjVhYjBlMjU2LTBmMTktNDMxMi04MmQ1LTgwYmU5NDcxM2YyNiJ9.7b5VK1t2Ox7Msd9psYBmtKokzoxv9nWDWzgsXqTnrI0',
+    }});
+const collections = [... (await collections_response.json())];
+---
+
+<script>
+
+</script>
+
+
+<div class="bg-neutral-800 w-1/6 h-full p-3 pt-10">
+    {collections.map(
+        (collection) => <div class="bg-neutral-700 w-full h-10 mb-2"></div>
+    )}
+</div>
+<div class="bg-neutral-700 w-1/3 h-full pt-10">
+    <h1 class="text-neutral-300"> Some text here</h1>
+</div>
+
+<div class="bg-neutral-800 w-1/2 h-full pt-10">
+    <h1 class="text-neutral-300"> Some text here</h1>
+</div>

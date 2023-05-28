@@ -12,7 +12,7 @@
 </script>
 
 
-<div class="bg-neutral-800 w-1/2 h-full pt-10">
+<div class="bg-neutral-800 w-2/5 h-full pt-10">
     {#if selectedTodo == null}
         <h1 class="text-3xl text-emerald-400"> Select a todo to get started </h1>
     {:else}

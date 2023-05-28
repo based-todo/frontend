@@ -4,7 +4,7 @@
     let elements = [];
 
     onMount(async () => {
-        const res = await fetch('http://jsonplaceholder.typicode.com/todos/?_limit=3');
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos/?_limit=3');
         elements = await res.json();
     });
 </script>

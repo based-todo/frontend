@@ -1,4 +1,4 @@
-export let baseUrl = 'http://localhost:5000';
+export let baseUrl = 'https://based-todo.azurewebsites.net/';
 export function getAuth() {
     let loc = localStorage.getItem('authToken');
     let ses = sessionStorage.getItem('authToken');

@@ -53,7 +53,7 @@
           todo.data.body,
           todo.data.completed,
           todo.data.ownerId,
-          todo.data.due_date,
+          new Date(todo.data.due_date == ""?null:todo.data.due_date),
           todo.data.attachments
           )
         }
@@ -71,15 +71,15 @@
 
   $: filteredTodos = (() => {
     let ret = todos;
-    // if (hideCompletedTodos) ret = todos.filter((todo) => !todo.completed);
-    // switch (sortBy) {
-    //   case "Title":
-    //     ret = ret.sort((a, b) => a.title.localeCompare(b.title));
-    //     break;
-    //   case "Date":
-    //     ret = ret.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
-    //     break;
-    // }
+    if (hideCompletedTodos) ret = todos.filter((todo) => !todo.completed);
+    switch (sortBy) {
+      case "Title":
+        ret = ret.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+      case "Date":
+        ret = ret.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
+        break;
+    }
     console.log("filtered", ret);
     return ret;
   })();

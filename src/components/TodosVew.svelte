@@ -1,10 +1,24 @@
 <script>
-  import { now, prevent_default } from "svelte/internal";
+// @ts-nocheck
+
+  import { base } from "$app/paths";
+  import { json } from "@sveltejs/kit";
   /* @ts-ignore */
   import { Collection } from "../model/Collection.js";
-  import { Attachment, Todo } from "../model/Todo.js";
-  import { Input } from "postcss";
+  import { Attachment, Todo, addTodo } from "../model/Todo.js";
+  import { getAuth, baseUrl } from "../model/auth.js";
+  import { onMount } from "svelte";
 
+  let auth;
+  onMount(()=>{
+    const auth_p = getAuth();
+    if (auth_p == null) {
+      window.location.href = "/login";
+      return;
+    }
+    auth = auth_p;
+  });
+  let newTodoTitle = "";
   /**
    * @type {Collection?}
    */
@@ -21,24 +35,31 @@
   async function fetchTodos() {
     if (selectedCollection == null) return;
     const response = await fetch(
-      `https://jsonplaceholder.typicode.com/todos?_limit=${selectedCollection.id}`
+      `${baseUrl}/api/v1/collections/todos/${selectedCollection.id}`, {
+        headers: {
+          Authorization: `${auth}`,
+        },
+      }
     );
-    todos = (await response.json()).map(
+    const dtos = await response.json();
+    console.log("todo dtos",dtos); 
+    todos = [...dtos].map(
       (
         /** @type {{ id: string; title: string; completed: boolean; userId: string; }} */ todo
-      ) =>
-        new Todo(
+      ) => {
+        return new  Todo(
           todo.id,
-          todo.title,
-          "some body",
-          todo.completed,
-          todo.userId,
-          new Date(`${2023 + todo.id}-05-30`),
-          [new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg"),
-          new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg"),
-          new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg")]
-        )
+          todo.data.title,
+          todo.data.body,
+          todo.data.completed,
+          todo.data.ownerId,
+          todo.data.due_date,
+          todo.data.attachments
+          )
+        }
     );
+
+    console.log("todos after fetch", todos);
   }
 
   $: selectedCollection && fetchTodos();
@@ -50,20 +71,21 @@
 
   $: filteredTodos = (() => {
     let ret = todos;
-    if (hideCompletedTodos) ret = todos.filter((todo) => !todo.completed);
-    switch (sortBy) {
-      case "Title":
-        ret = ret.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-      case "Date":
-        ret = ret.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
-        break;
-    }
+    // if (hideCompletedTodos) ret = todos.filter((todo) => !todo.completed);
+    // switch (sortBy) {
+    //   case "Title":
+    //     ret = ret.sort((a, b) => a.title.localeCompare(b.title));
+    //     break;
+    //   case "Date":
+    //     ret = ret.sort((a, b) => a.duedate.getTime() - b.duedate.getTime());
+    //     break;
+    // }
+    console.log("filtered", ret);
     return ret;
   })();
 
-  $: filteredTodos && console.log("changed", filteredTodos);
-  $: selectedTodo && console.log("changed", selectedTodo);
+  // $: filteredTodos && console.log("changed filtered", filteredTodos);
+  // $: selectedTodo && (async () => { console.log("changed sigle", selectedTodo)})();
 </script>
 
 <div class="bg-neutral-700 w-2/5 h-full p-5 overflow-auto">
@@ -148,8 +170,8 @@
     <hr class="border-emerald-200" />
 
     <div class="bg-neutral-400 my-5 mx-2 flex flex-row justify-between rounded-sm">
-        <input type="text" placeholder="Create a new todo" class="w-full text-2xl bg-neutral-400 placeholder-emerald-100 outline-none rounded-sm p-2"
-        on:keydown={async (event) => { if(event.code == 'Enter') console.log("add todo");}}>
+        <input type="text" placeholder="Create a new todo" bind:value={newTodoTitle} class="w-full text-2xl bg-neutral-400 placeholder-emerald-100 outline-none rounded-sm p-2"
+        on:keydown={async (event) => { if(event.code == 'Enter') {todos = await addTodo(auth, baseUrl, todos, newTodoTitle, selectedCollection.id); newTodoTitle="";}}}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <svg on:click={async () => {console.log("add todo")}} class="transition-all w-6 mr-2 fill-emerald-200 hover:fill-emerald-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>
 

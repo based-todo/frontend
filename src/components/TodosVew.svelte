@@ -2,7 +2,7 @@
   import { now, prevent_default } from "svelte/internal";
   /* @ts-ignore */
   import { Collection } from "../model/Collection.js";
-  import { Todo } from "../model/Todo.js";
+  import { Attachment, Todo } from "../model/Todo.js";
   import { Input } from "postcss";
 
   /**
@@ -33,7 +33,10 @@
           "some body",
           todo.completed,
           todo.userId,
-          new Date(`${2023 + todo.id}-05-30`)
+          new Date(`${2023 + todo.id}-05-30`),
+          [new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg"),
+          new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg"),
+          new Attachment("duck.png","https://images.pexels.com/photos/162137/duckling-birds-yellow-fluffy-162137.jpeg?cs=srgb&dl=pexels-pixabay-162137.jpg&fm=jpg")]
         )
     );
   }
@@ -60,6 +63,7 @@
   })();
 
   $: filteredTodos && console.log("changed", filteredTodos);
+  $: selectedTodo && console.log("changed", selectedTodo);
 </script>
 
 <div class="bg-neutral-700 w-2/5 h-full p-5 overflow-auto">
@@ -144,7 +148,7 @@
     <hr class="border-emerald-200" />
 
     <div class="bg-neutral-400 my-5 mx-2 flex flex-row justify-between rounded-sm">
-        <input type="text" class="w-full text-2xl bg-neutral-400 outline-none rounded-sm"
+        <input type="text" placeholder="Create a new todo" class="w-full text-2xl bg-neutral-400 placeholder-emerald-100 outline-none rounded-sm p-2"
         on:keydown={async (event) => { if(event.code == 'Enter') console.log("add todo");}}>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <svg on:click={async () => {console.log("add todo")}} class="transition-all w-6 mr-2 fill-emerald-200 hover:fill-emerald-500 cursor-pointer" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2023 Fonticons, Inc. --><path d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32V224H48c-17.7 0-32 14.3-32 32s14.3 32 32 32H192V432c0 17.7 14.3 32 32 32s32-14.3 32-32V288H400c17.7 0 32-14.3 32-32s-14.3-32-32-32H256V80z"/></svg>

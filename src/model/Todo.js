@@ -1,3 +1,14 @@
+export class Attachment {
+    /**
+     * @param {string} title
+     * @param {string} url
+     * */
+    constructor(title, url){
+        this.title = title;
+        this.url = url;
+    }
+}
+
 export class Todo {
     /**
    * @param {string} id
@@ -6,14 +17,16 @@ export class Todo {
    * @param {boolean} completed
    * @param {string} collectionId
    * @param {Date} duedate
+   * @param {Attachment[]} attachments
    */
-    constructor(id, title, body, completed, collectionId, duedate) {
+    constructor(id, title, body, completed, collectionId, duedate, attachments) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.completed = completed;
         this.collectionId = collectionId;
         this.duedate = duedate;
+        this.attachments = attachments;
     }
 }
 

@@ -51,7 +51,7 @@
       {#each filteredCollections as collection}
           <!-- svelte-ignore a11y-click-events-have-key-events -->
           <div
-            class={`${(selectedCollection === collection)?"bg-emerald-500":"bg-neutral-400"} hover:bg-emerald-500 my-2 p-1 rounded-sm cursor-pointer transition-colors group/colect flex flex-row justify-between`}
+            class={`${(selectedCollection === collection)?"bg-emerald-500":"bg-neutral-400"} hover:bg-emerald-500 p-1 rounded-sm cursor-pointer transition-colors group/colect flex flex-row justify-between`}
             on:click={() => {
               selectedCollection = collection;
             }}
